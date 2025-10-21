@@ -24,7 +24,7 @@ public class GameManager extends SurfaceView implements Runnable {
         mScreenY = y;
 
         mOurHolder = getHolder(); // getHolder() is a method of SurfaceView
-        mPaint = new Paint();
+//        mPaint = new Paint();
     }
 
     private void update() {
@@ -36,8 +36,9 @@ public class GameManager extends SurfaceView implements Runnable {
             // Fill the screen with a solid color
             mCanvas.drawColor(Color.argb(255, 26, 128, 182));
             // Choose a color to paint with
-            mPaint.setColor(Color.argb(255, 255, 255, 255));
-            mCanvas.drawText("hello", 20, 100, mPaint);
+            Circle circle_1 = new Circle(100, 200, 50);
+            circle_1.draw(mCanvas);
+
             mOurHolder.unlockCanvasAndPost(mCanvas);
         }
     }
