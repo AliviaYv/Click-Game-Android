@@ -2,12 +2,15 @@ package com.example.junShape;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public class Circle extends Shape {
-    private float radius;
 
-    public Circle(float x, float y, float radius, int color) {
+public class Rectangle extends Shape{
+    private float width;
+    private float height;
+
+    public Rectangle(float x, float y, float width, float height, int color) {
         super(x, y, color);
-        this.radius = radius;
+        this.width = width;
+        this.height = height;
     }
 
     @Override
@@ -15,6 +18,6 @@ public class Circle extends Shape {
         paint.setColor(color);
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
-        canvas.drawCircle(x, y, radius, paint);
+        canvas.drawRect(x, y, (x + width), y + height, paint);
     }
 }

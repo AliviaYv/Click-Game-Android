@@ -16,7 +16,7 @@ public abstract class Shape {
 
     public abstract void draw(Canvas canvas, Paint paint);
 
-    public void move(float dx, float dy) {
+    public void move(double dx, double dy) {
         x += dx;
         y += dy;
     }

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 
-import com.example.shape.GameManager;
+import com.example.junShape.GameManager;
 
 public class MainActivity extends Activity {
     GameManager mGameManager;
