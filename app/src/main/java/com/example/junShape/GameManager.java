@@ -37,28 +37,22 @@ public class GameManager extends SurfaceView implements Runnable {
         if (mOurHolder.getSurface().isValid()) {
             mCanvas = mOurHolder.lockCanvas();
             // Fill the screen with a solid color
-            mCanvas.drawColor(Color.argb(200, 100, 128, 0));
+            mCanvas.drawColor(Color.argb(255, 255, 255, 0));
             // Choose a color to paint with
 
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
             paint.setAntiAlias(true);
 
-            for (int i = 100; i < 900; i += 100) {
-                com.example.junShape.Circle circle_1 = new Circle(i, i * 2, 100, Color.RED * (10 * i));
-                circle_1.draw(mCanvas, paint);
-            }
+            Robot robot_1 = new Robot(200, 300, 5);
+            robot_1.draw(mCanvas, paint);
+            Robot robot_2 = new Robot(500, 300, 5);
+            robot_2.draw(mCanvas, paint);
 
-            for (int i = 100; i < 900; i += 100) {
-                com.example.junShape.Rectangle rectangle_1 = new Rectangle(i - 50, i * 2, 100, 200, Color.BLUE * (i / 2));
-                rectangle_1.draw(mCanvas, paint);
-            }
-
-            for (int i = 100; i < 900; i += 100) {
-                com.example.junShape.StraightLine left_leg = new StraightLine(i - 100, i * 2, i - 100, i* 3, Color.BLUE * (i / 2), 5);
-                left_leg.draw(mCanvas, paint);
-            }
-
+            Robot robot_3 = new Robot(200, 1000, 2);
+            robot_3.draw(mCanvas, paint);
+            Robot robot_4 = new Robot(500, 1000, 4);
+            robot_4.draw(mCanvas, paint);
 
             mOurHolder.unlockCanvasAndPost(mCanvas);
         }
