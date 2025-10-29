@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GridClick">
         <activity
-            android:name="com.example.junShape.MainActivity"
+            android:name="com.example.shape.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -17,6 +17,8 @@ public class GameManager extends SurfaceView implements Runnable {
     private Thread mGameThread = null;
     private volatile boolean mPlaying;
     private boolean mPaused = true;
+
+    final private int mFPS = 1;
     public GameManager(Context context, int x, int y) {
         super(context);
 
@@ -31,6 +33,7 @@ public class GameManager extends SurfaceView implements Runnable {
         Log.i("debug: ", "update");
     }
     private void draw() {
+        Log.d("debug:", "draw");
         if (mOurHolder.getSurface().isValid()) {
             mCanvas = mOurHolder.lockCanvas();
             // Fill the screen with a solid color
@@ -46,9 +49,14 @@ public class GameManager extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while(mPlaying) {
-//            long frameStartTime = System.currentTimeMillis();
+            long frameStartTime = System.currentTimeMillis();
             draw();
-//            long timeThisFrame = System.currentTimeMillis() - frameStartTime;
+            long timeThisFrame = System.currentTimeMillis() - frameStartTime;
+            try {
+                Thread.sleep(1000 / mFPS - timeThisFrame);
+            } catch (InterruptedException e) {
+                Log.d("Error: ", e.getMessage());
+            }
         }
     }
 

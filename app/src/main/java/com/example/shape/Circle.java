@@ -3,22 +3,21 @@ package com.example.shape;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
-public class Circle {
-    private float mX;
-    private float mY;
-    private float mRadius;
-    private Paint mPaint;
-
+public class Circle extends Shape{
     public Circle(float x, float y, float radius) {
-        this.mX = x;
-        this.mY = y;
-        this.mRadius = radius;
-        mPaint = new Paint();
+        super(x - radius, y - radius, x + radius, y + radius);
     }
 
     public void draw(Canvas canvas) {
-        mPaint.setColor(Color.argb(255, 250, 0, 0));
-        canvas.drawCircle(mY, mY, mRadius, mPaint);
+        Paint paint = new Paint();
+        paint.setColor(Color.argb(255, 250, 0, 0));
+
+        RectF rect = getmRect();
+        canvas.translate(rect.left, rect.top);
+        Float x = (rect.left + rect.right) / 2;
+        Float y = (rect.top + rect.bottom) / 2;
+        canvas.drawCircle(x, y, 40, paint);
     }
 }
