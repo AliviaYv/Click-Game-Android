@@ -20,6 +20,11 @@ public class GameManager extends SurfaceView implements Runnable {
     private Thread mGameThread = null;
     private volatile boolean mPlaying;
     private boolean mPaused = true;
+    private float dx = 5; // 每帧x方向速度
+    private float dy = 3;
+
+    private float dAngle = 100;
+    Robot robot_1 = new Robot(500, 500, 4);
     public GameManager(Context context, int x, int y) {
         super(context);
 
@@ -27,11 +32,35 @@ public class GameManager extends SurfaceView implements Runnable {
         mScreenY = y;
 
         mOurHolder = getHolder(); // getHolder() is a method of SurfaceView
-//        mPaint = new Paint();
+        mPaint = new Paint();
     }
 
     private void update() {
-        Log.i("debug: ", "update");
+        robot_1.update(dx, dy, 0);
+        float rx = robot_1.getX();
+        float ry = robot_1.getY();
+
+        if(dx > 0){
+            robot_1.setFacingRight(true);
+        } else {
+            robot_1.setFacingRight(false);
+        }
+
+        // 假设机器人宽高大约 100*100 px，可根据 scale 调整
+        float robotWidth = 100f;
+        float robotHeight = 100f;
+
+        // 碰到左右边界掉头
+        if(rx - robotWidth/2 < 0 || rx + robotWidth/2 > mScreenX){
+            dx = -dx;       // x 方向反向
+            robot_1.setAngle(robot_1.getAngle() + 180); // 转身
+        }
+
+        // 碰到上下边界掉头
+        if(ry - robotHeight/2 < 0 || ry + robotHeight/2 > mScreenY){
+            dy = -dy;       // y 方向反向
+            robot_1.setAngle(robot_1.getAngle() + 180); // 转身
+        }
     }
     private void draw() {
         if (mOurHolder.getSurface().isValid()) {
@@ -43,29 +72,24 @@ public class GameManager extends SurfaceView implements Runnable {
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
             paint.setAntiAlias(true);
-
-            Robot robot_1 = new Robot(200, 300, 5);
             robot_1.draw(mCanvas, paint);
-            Robot robot_2 = new Robot(500, 300, 5);
-            robot_2.draw(mCanvas, paint);
 
-            Robot robot_3 = new Robot(200, 1000, 2);
-            robot_3.draw(mCanvas, paint);
-            Robot robot_4 = new Robot(500, 1000, 4);
-            robot_4.draw(mCanvas, paint);
+
 
             mOurHolder.unlockCanvasAndPost(mCanvas);
         }
     }
 
     @Override
-    public void run() {
-        while(mPlaying) {
-//            long frameStartTime = System.currentTimeMillis();
+    public void run(){
+        while(mPlaying){
+            update();
             draw();
-//            long timeThisFrame = System.currentTimeMillis() - frameStartTime;
+            try{ Thread.sleep(16); } catch(Exception e){}
         }
     }
+
+
 
     public void pause() {
         mPlaying = false;
@@ -82,3 +106,4 @@ public class GameManager extends SurfaceView implements Runnable {
         mGameThread.start();
     }
 }
+

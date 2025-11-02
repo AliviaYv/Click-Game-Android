@@ -5,7 +5,8 @@ import android.graphics.Paint;
 
 
 public class Robot {
-    private double x, y, scale;
+    private float x, y, scale;
+    private float angle = 0;
 
     // 各部分组件
     private Circle head, headOutline, leftEye, rightEye;
@@ -14,44 +15,62 @@ public class Robot {
     private Rectangle body;
     private StraightLine armLeft, armRight, legLeft, legRight;
 
+    private boolean facingRight = true;
+
     public Robot(float x, float y, float scale) {
         this.x = x;
         this.y = y;
         this.scale = scale;
 
-        // 头部
-        head = new Circle(x, y, 30 * scale, Color.WHITE);
-        headOutline = new Circle(x, y, 32 * scale, Color.BLACK);
+        head = new Circle(0, 0, 30*scale, Color.WHITE);
+        headOutline = new Circle(0, 0, 32*scale, Color.BLACK);
 
         // 眼睛
-        leftEye = new Circle(x - 10 * scale, y, 3 * scale, Color.BLACK);
-        rightEye = new Circle(x + 10 * scale, y, 3 * scale, Color.BLUE);
+        leftEye = new Circle(-10*scale, 0, 3*scale, Color.BLACK);
+        rightEye = new Circle(10*scale, 0, 3*scale, Color.RED);
 
         // 天线
-        antennaLeft = new StraightLine(x - 10 * scale, y - 32 * scale, x - 10 * scale, y - 50 * scale, Color.RED, 2);
-        antennaRight = new StraightLine(x + 10 * scale, y - 32 * scale, x + 10 * scale, y - 50 * scale, Color.RED, 2);
-        antennaDotLeft = new Circle(x - 10 * scale, y - 52 * scale, 2 * scale, Color.BLACK);
-        antennaDotRight = new Circle(x + 10 * scale, y - 52 * scale, 2 * scale, Color.BLUE);
+        antennaLeft = new StraightLine(-10*scale, -32*scale, -10*scale, -50*scale, Color.RED, 2);
+        antennaRight = new StraightLine(10*scale, -32*scale, 10*scale, -50*scale, Color.RED, 2);
+        antennaDotLeft = new Circle(-10*scale, -52*scale, 2*scale, Color.BLACK);
+        antennaDotRight = new Circle(10*scale, -52*scale, 2*scale, Color.BLUE);
 
         // 身体
-        body = new Rectangle(x - 15 * scale, y + 30 * scale, 30 * scale, 40 * scale, Color.BLUE);
+        body = new Rectangle(-15*scale, 30*scale, 30*scale, 40*scale, Color.BLUE);
 
         // 手臂
-        armLeft = new StraightLine(x - 15 * scale, y + 35 * scale, x - 40 * scale, y + 15 * scale, Color.GREEN, 3);
-        armRight = new StraightLine(x + 15 * scale, y + 35 * scale, x + 40 * scale, y + 15 * scale, Color.GREEN, 3);
+        armLeft = new StraightLine(-15*scale, 35*scale, -40*scale, 15*scale, Color.GREEN, 3);
+        armRight = new StraightLine(15*scale, 35*scale, 40*scale, 15*scale, Color.MAGENTA, 3);
 
         // 腿
-        legLeft = new StraightLine(x - 10 * scale, y + 70 * scale, x - 10 * scale, y + 95 * scale, Color.RED, 4);
-        legRight = new StraightLine(x + 10 * scale, y + 70 * scale, x + 10 * scale, y + 95 * scale, Color.RED, 4);
-    }
+        legLeft = new StraightLine(-10*scale, 70*scale, -10*scale, 95*scale, Color.RED, 4);
+        legRight = new StraightLine(10*scale, 70*scale, 10*scale, 95*scale, Color.RED, 4);}
 
-    public void move(float dx, float dy) {
+    public void update(float dx, float dy, float dAngle){
         x += dx;
         y += dy;
+        angle += dAngle;
+
+
+
     }
+
+    public void setFacingRight(boolean facingRight){
+        this.facingRight = facingRight;
+    }
+
+    public float getX() { return x; }
+    public float getY() { return y; }
+    public float getAngle() { return angle; }
+    public void setAngle(float angle) { this.angle = angle; }
 
 
     public void draw(Canvas canvas, Paint paint) {
+        canvas.save();
+        canvas.translate(x, y);
+        if(!facingRight){
+            canvas.scale(-1, 1); // 水平翻转
+        }
         // 绘制顺序：身体 → 腿 → 手 → 头 → 眼 → 天线
         body.draw(canvas, paint);
         legLeft.draw(canvas, paint);
